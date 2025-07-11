@@ -1,0 +1,31 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.Account.ProfileModel
+@{
+}
+
+<div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold; border-radius: 10px 10px 0 0; text-transform: uppercase;">
+    @Model.Student.Name'S INFORMATION
+</div>
+
+<div class="col justify-content-center text-center border-right">
+    <div class="card shadow-sm" style="border-radius: 15px; background-color: #f9f9f9;">
+        <div class="card-body p-4 align">
+            <h4 class="text-primary mb-4" style="font-weight: bold;">Student Information</h4>
+            <div class="mb-3">
+                <img src="@Model.Student.Image"
+                     class="rounded-circle img-thumbnail shadow-sm"
+                     alt=<img src="/images/default.jpg"
+                     style="width: 200px; height: 200px; border: 5px solid #2F3590;" />
+            </div>
+            <div class="text-left">
+                <p><strong class="text-secondary">Student ID:</strong> <span class="text-dark">@Model.Student.Id</span></p>
+                <p><strong class="text-secondary">Name:</strong> <span class="text-dark;" style="text-transform: uppercase">@Model.Student.Name</span></p>
+                <p><strong class="text-secondary">Course:</strong> <span class="text-dark">@Model.Student.Course</span></p>
+                <p><strong class="text-secondary">Last Enrolled:</strong> <span class="text-dark">@Model.Student.LastEnrolled</span></p>
+                <p><strong class="text-secondary">Semester:</strong> <span class="text-dark">@Model.Student.Semester</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,151 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.AdminView.BorrowersCardModel
+@{
+    ViewData["Title"] = "Borrowers and Borrowed Components";
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Borrowers Card -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm" style="border-radius: 10px; border: 1px solid #ddd;">
+                <div class="card-header text-white" style="background-color: #2F3590; border-radius: 10px 10px 0 0;">
+                    <h6 class="mb-0">Borrowers</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Borrowers != null && Model.Borrowers.Any())
+                    {
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            @foreach (var student in Model.Borrowers)
+                            {
+                                <!-- Borrower Card -->
+                                <div class="borrower-card mb-3 p-3 rounded shadow-sm" style="border: 1px solid #ddd; background-color: #fff;">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <img src="@student.Image" alt="@student.Name" class="img-fluid rounded-circle" style="width: 70px; height: 70px; object-fit: cover;">
+                                        </div>
+                                        <div class="col">
+                                            <h6 class="mb-0 text-primary">@student.Name</h6>
+                                            <p class="mb-0 text-secondary"><strong>Course:</strong> @student.Course</p>
+                                        </div>
+                                        <div class="col-auto">
+                                            <a href="@Url.Page("/AdminView/BorrowingForm/BorrowerInformation", new { id = student.Id })" class="btn btn-primary btn-sm custom-button">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info text-center mb-0">No borrowers found.</div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Borrowed Components Card -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm" style="border-radius: 10px; border: 1px solid #ddd;">
+                <div class="card-header text-white" style="background-color: #2F3590; border-radius: 10px 10px 0 0;">
+                    <h6 class="mb-0">Borrowed Components</h6>
+                </div>
+                <div class="card-body">
+                    @if (Model.Components != null && Model.Components.Any())
+                    {
+                        <div style="max-height: 300px; overflow-y: auto;">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Particular</th>
+                                        <th>Quantity</th>
+                                        <th>Time Borrowed</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var component in Model.Components)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <img src="@component.Image" alt="Image of @component.Particular" class="img-fluid rounded" style="width: 75px; height: 75px; object-fit: cover;">
+                                            </td>
+                                            <td>@component.Particular</td>
+                                            <td>@component.Quantity</td>
+                                            <td>@component.TimeBorrowed.ToString("dddd, MMMM d, yyyy hh:mm tt")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">No borrowed components to display.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Section -->
+    <div class="mt-4">
+        <div class="card shadow-sm" style="border-radius: 10px; border: 1px solid #ddd;">
+            <div class="card-header text-white" style="background-color: #2F3590; border-radius: 10px 10px 0 0;">
+                <h6 class="mb-0">Notifications</h6>
+            </div>
+            <div class="card-body">
+                <!-- Today's Borrowing -->
+                <h6 class="text-primary">Today's Borrowing</h6>
+                @if (Model.TodayNotifications.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var notification in Model.TodayNotifications)
+                        {
+                            <li class="list-group-item list-group-item-action"
+                                onclick="window.location.href='@Url.Page("/AdminView/BorrowingForm/BorrowingFormDetails", new { id = notification.FormId })'">
+                                <strong>@notification.Message</strong>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="alert alert-info">No borrowing scheduled for today.</div>
+                }
+
+                <!-- Upcoming Borrowing -->
+                <h6 class="text-primary mt-3">Upcoming Borrowing</h6>
+                @if (Model.UpcomingNotifications.Any())
+                {
+                    <ul class="list-group">
+                        @foreach (var notification in Model.UpcomingNotifications)
+                        {
+                            <li class="list-group-item list-group-item-action"
+                                onclick="window.location.href='@Url.Page("/AdminView/BorrowingForm/BorrowingFormDetails", new { id = notification.FormId })'">
+                                <strong>@notification.Message</strong>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="alert alert-info">No upcoming borrowing scheduled.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .custom-button {
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+        .custom-button:hover {
+            opacity: 0.9;
+        }
+</style>

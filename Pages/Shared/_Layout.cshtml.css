@@ -1,0 +1,69 @@
+﻿/* Sidebar styling */
+.grid-container {
+    display: grid;
+    grid-template-columns: 300px 1fr; /* Sidebar width and flexible content area */
+    grid-template-rows: 1fr auto; /* Main content height and footer */
+    height: 100vh; /* Full viewport height */
+    place-content: end;
+}
+
+.main-menu {
+    background-color: #ffffff;
+    border-right: 1px solid #e5e5e5;
+    padding: 10px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    border-block: #252f40;
+    border-radius: 5px;
+}
+
+.main-menu ul {
+    list-style-type: none;
+    padding: 5px;
+}
+
+.main-menu li {
+    margin: 10px 0;
+    padding: 0;
+}
+
+.main-menu a.nav-link {
+    color: #252F40;
+    font-size: 18px;
+    text-decoration: none;
+    padding: 10px 20px; /* Space inside the link */
+    border-radius: 8px;
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+}
+
+.main-menu a.nav-link:hover {
+    background-color: #f8f9fa;
+    color: #252F40;
+}
+
+.fa {
+    font-size: 20px;
+}
+
+.nav-text {
+    flex-grow: 1; /* Takes available space */
+    white-space: nowrap; /* Prevents text from wrapping to the next line */
+    overflow: hidden; /* Hides overflow if text is too long */
+    padding: 0 10px;
+}
+
+.icon {
+    width: 24px; /* Set a specific width */
+    height: 24px; /* Set a specific height */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+
+/* Footer styling */
+.footer {
+    background-color: white; /* Background color for the footer */
+    border-top: 1px solid #dee2e6; /* Optional: Border for the top of the footer */
+    text-align: center; /* Center the footer text */
+    padding: 10px 0; /* Padding for the footer content */
+    grid-column: 1 / -1; /* Span across all columns */
+}

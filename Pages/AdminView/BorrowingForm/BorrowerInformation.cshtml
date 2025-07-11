@@ -1,0 +1,133 @@
+﻿@page "{id:int}"
+@model HardwareInventoryTrackingSystem.Pages.AdminView.BorrowingForm.BorrowerInformationModel
+@{
+    ViewData["Title"] = "Borrower Details";
+}
+
+<div class="container shadow-lg my-4 p-4 bg-white rounded">
+    <div class="row">
+        <!-- Student Information Section -->
+        <div class="col-md-4 text-center border-right">
+            <div class="card-body">
+                <h4 class="text-primary">Student Information</h4>
+                <img src="@Model.Borrower.Image" class="rounded-circle img-thumbnail mb-3"
+                     style="width: 250px; height: 250px;" alt="@Model.Borrower.Name" />
+                <p><strong>Student ID:</strong> @Model.Borrower.Id</p>
+                <p><strong>Name:</strong> @Model.Borrower.Name</p>
+                <p><strong>Birthdate:</strong> @Model.Borrower.Birthdate.ToLongDateString()</p>
+                <p><strong>Course:</strong> @Model.Borrower.Course</p>
+                <p><strong>Last Enrolled:</strong> @Model.Borrower.SchoolYear</p>
+                <p><strong>Semester:</strong> @Model.Borrower.Semester</p>
+            </div>
+        </div>
+
+        <!-- Borrowed Components Section -->
+        <div class="col-md-8 scrollable-container">
+            <h5 class="text-secondary">Borrowed Components</h5>
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    @if (Model.Borrower.BorrowingForms.Any())
+                    {
+                        @foreach (var form in Model.Borrower.BorrowingForms)
+                        {
+                            if (form.IsApproved)
+                            {
+                                continue;
+                            }
+
+                            <div class="borrowing-form-section">
+                                <h6 class="text-dark"><strong>Date Borrowed:</strong> @form.DateToBorrow.ToLongDateString()</h6>
+                                <p><strong>Purpose:</strong> @form.Purpose</p>
+                                <div class="divider"></div>
+                                <h6 class="text-dark"><strong>Borrowed Items:</strong></h6>
+                                <form method="post" asp-page-handler="ClaimAndApprove" class="borrowed-items-form">
+                                    <div class="borrowed-items">
+                                        @foreach (var item in form.BorrowedItems.Where(i => !i.Claimed))
+                                        {
+                                            <div class="borrowed-item d-flex align-items-center mb-3">
+                                                <div class="col-md-1 text-center">
+                                                    <img src="@item.Image" class="img-thumbnail"
+                                                         style="width: 100px; height: auto;" alt="@item.ItemName" />
+                                                </div>
+                                                
+                                                <div class="col-md-3 text-center">
+                                                    <strong>@item.ItemName</strong><br />
+                                                    Quantity: @item.Quantity
+                                                </div>
+                                                <div class="col-md-2 text-center">
+                                                    <strong>@item.Remarks</strong><br />
+                                                </div>
+                                                <div class="col-md-4 text-center">
+                                                    <input type="checkbox" name="selectedItems" value="@item.ItemId" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="form-buttons d-flex justify-content-end mt-3">
+                                        <input type="hidden" name="formId" value="@form.FormId" />
+                                        <button type="submit" class="btn btn-success">
+                                            Approve
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">No borrowed components found for this student.</div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .scrollable-container {
+        max-height: 600px;
+        overflow-y: auto;
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .borrowing-form-section {
+        padding: 15px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .divider {
+        height: 1px;
+        background-color: #ccc;
+        margin: 15px 0;
+    }
+
+    .borrowed-item {
+        background-color: #fefefe;
+        border: 1px solid #ddd;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .form-buttons .btn {
+        border-radius: 20px;
+        padding: 5px 15px;
+    }
+
+    .rounded-circle {
+        border: 2px solid #007bff;
+    }
+
+    .text-primary {
+        color: #007bff;
+    }
+
+    .text-secondary {
+        color: #6c757d;
+    }
+</style>

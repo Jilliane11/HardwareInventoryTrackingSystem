@@ -1,0 +1,91 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.BorrowingForm.BorrowingDoneModel
+@{
+    ViewData["Title"] = "Borrowing Done";
+}
+<div class="thank-you-container">
+    <div class="thank-you-header">
+        <h1>Thank You!</h1>
+    </div>
+    <div class="thank-you-body">
+        <p>You have successfully borrowed a component from the laboratory. Please ensure that you take care of the item during the activity period.</p>
+        <p><strong>Reminder:</strong> Return the component to the laboratory on or before the due date specified. Failure to do so may result in penalties.</p>
+        <p><strong>Developed By:  </strong>Jilliane Ruth Febiar</p>
+  
+    </div>
+    <div class="thank-you-footer">
+        <a href="@Url.Page("/BorrowingForm/BorrowingForm")" class="btn btn-primary">Back to HOME</a>
+        <a href="@Url.Page("/History/StudentHistory")" class="btn btn-success">View</a>
+       @*  <button class="btn btn-success" onclick="window.location.href='@Url.Page("/History/StudentHistory")'">View Borrow History</button> *@
+    </div>
+</div>
+
+<style>
+    /* Scoped Styles for Thank You Page */
+    .thank-you-container {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: 50px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .thank-you-header {
+        background-color: #2F3590;
+        color: white;
+        padding: 15px;
+        border-radius: 8px 8px 0 0;
+    }
+
+        .thank-you-header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+    .thank-you-body {
+        padding: 20px;
+        font-size: 16px;
+        color: #333;
+        line-height: 1.5;
+    }
+
+        .thank-you-body strong {
+            color: #2F3590;
+        }
+
+    .thank-you-footer {
+        padding: 15px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .btn-primary {
+        background-color: #2F3590;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+        .btn-primary:hover {
+            background-color: #1d225f;
+        }
+
+    .btn-success {
+        background-color: #19A554;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+        .btn-success:hover {
+            background-color: #137d3c;
+        }
+</style>

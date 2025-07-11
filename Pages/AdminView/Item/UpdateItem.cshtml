@@ -1,0 +1,133 @@
+﻿@page "{id:int}"
+@model HardwareInventoryTrackingSystem.Pages.Item.UpdateItemModel
+@{
+    ViewData["Title"] = "Update Item";
+}
+
+<div class="container mt-3">
+    <!-- Back Button -->
+    <div class="mb-3">
+        <a asp-page="ItemView" class="btn btn-outline-secondary d-flex align-items-center" style="max-width: 150px;">
+            <img src="/icons/caret-left.svg" alt="Back" style="height: 20px; width: 20px; margin-right: 5px;" />
+            Back to Items
+        </a>
+    </div>
+
+    <!-- Page Title -->
+    <h1 style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold;">UPDATE ITEM</h1>
+
+    <!-- Validation Error Section -->
+    @if (!ModelState.IsValid)
+    {
+        <div class="alert alert-danger mt-3">
+            <ul>
+                @foreach (var modelState in ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <!-- Form Section -->
+    <form method="post" class="mt-4">
+        <!-- COMPONENT NAME -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Name" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Name" placeholder="Enter Component Name" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+
+        <!-- SPECIFICATION -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Specification" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Specification" placeholder="Enter Specifications" />
+            <span asp-validation-for="Input.Specification" class="text-danger"></span>
+        </div>
+
+        <!-- CATEGORY/ITEM TYPE -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Type" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Type" placeholder="Enter Item Type" />
+            <span asp-validation-for="Input.Type" class="text-danger"></span>
+        </div>
+
+        <!-- CODE -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Code" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Code" placeholder="Enter Item Code" />
+            <span asp-validation-for="Input.Code" class="text-danger"></span>
+        </div>
+
+        <!-- STOCK -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Stock" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Stock" placeholder="Enter Stock Quantity" />
+            <span asp-validation-for="Input.Stock" class="text-danger"></span>
+        </div>
+
+        <!-- STATUS -->
+        <div class="form-group mb-3">
+            <label asp-for="Input.Status" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Status" placeholder="Enter Status (e.g., Available/Unavailable)" />
+            <span asp-validation-for="Input.Status" class="text-danger"></span>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="form-group mb-4">
+            <label asp-for="Input.Image" style="font-weight: bold; color: #2F3590;"></label>
+            <input class="form-control" asp-for="Input.Image" placeholder="Enter Image URL" />
+            <span asp-validation-for="Input.Image" class="text-danger"></span>
+        </div>
+
+        <!-- Buttons Section -->
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-outline-primary me-3" style="width: 150px;">
+                UPDATE ITEM
+            </button>
+            <a asp-page="ItemView" class="btn btn-outline-danger" style="width: 150px;">CANCEL</a>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    .form-control {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+        .form-control:focus {
+            border-color: #2F3590;
+            box-shadow: 0 0 5px rgba(47, 53, 144, 0.3);
+        }
+
+    .btn-outline-primary {
+        color: #19A554;
+        border-color: #19A554;
+    }
+
+        .btn-outline-primary:hover {
+            background-color: #19A554;
+            color: white;
+        }
+
+    .btn-outline-secondary {
+        color: #2F3590;
+        border-color: #2F3590;
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: #2F3590;
+            color: white;
+        }
+</style>

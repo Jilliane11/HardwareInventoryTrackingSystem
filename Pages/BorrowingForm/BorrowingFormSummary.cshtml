@@ -1,0 +1,152 @@
+﻿@page "{id:int?}"
+@model HardwareInventoryTrackingSystem.Pages.BorrowingForm.BorrowingFormSummaryModel
+@{
+    ViewData["Title"] = "Submitted Borrowing Form";
+}
+<div class="borrowing-details-container">
+    <div class="row">
+        <!-- Borrowing Form Details Column -->
+        <div class="col-md-6 form-details-column">
+            <div class="header">
+                BORROWING FORM DETAILS
+            </div>
+            <div class="details">
+                <p><strong>Subject Code:</strong> @Model.BorrowingForm.SubjectCode</p>
+                <p><strong>Purpose:</strong> @Model.BorrowingForm.Purpose</p>
+                <p><strong>Room No.:</strong> @Model.BorrowingForm.RoomNo</p>
+                <p><strong>Professor Name:</strong> @Model.BorrowingForm.ProfessorInCharge</p>
+                <p><strong>Date & Time To Borrow:</strong> @Model.BorrowingForm.TimeBorrowed.ToString("MMMM dd, yyyy hh:mm tt")</p>
+            </div>
+        </div>
+
+        <!-- Borrowed Items Column -->
+        <div class="col-md-6 borrowed-items-column">
+            <div class="header">
+                BORROWED ITEMS
+            </div>
+            <div class="items-container">
+                @foreach (var item in Model.ItemList)
+                {
+                    <div class="borrowed-item">
+                        <div class="item-info">
+                            <p><strong>Item Name:</strong> @item.Item.ItemName</p>
+                            <p><strong>Quantity:</strong> @item.Quantity</p>
+                            <p><strong>Remarks:</strong> @item.Remarks</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="text-danger">
+            NOTE: make sure to return the borrowed items before @Model.BorrowingForm.ExpectedReturnDate.ToString("MMMM dd, yyyy hh:mm tt")
+        </div>
+       
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="button-container">
+        <a href="@Url.Page("/BorrowingForm/BorrowingForm")" class="btn btn-primary custom-button">Add New Borrowing Form</a>
+        <a href="@Url.Page("/BorrowingForm/BorrowingDone")" class="btn btn-success custom-button">Done</a>
+    </div>
+</div>
+
+<style>
+    .borrowing-details-container {
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 10px;
+        font-family: 'Arial', sans-serif;
+        margin: auto;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+        background-color: #2F3590;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-details-column, .borrowed-items-column {
+        flex: 1;
+    }
+
+    .details p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #3A416F;
+    }
+
+    .items-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .borrowed-item {
+        display: flex;
+        gap: 15px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .item-image {
+        width: 80px;
+        height: 80px;
+        border-radius: 5px;
+        object-fit: cover;
+    }
+
+    .item-info p {
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #ddd;
+    }
+
+    .custom-button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    }
+
+        .custom-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+    .btn-primary.custom-button {
+        background-color: #2F3590;
+        border-color: #2F3590;
+    }
+
+    .btn-success.custom-button {
+        background-color: #28a745;
+        border-color: #28a745;
+    }
+</style>
+
+
+

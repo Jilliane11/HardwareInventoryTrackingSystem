@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <div>
+        <div class="grid-container">
+            <nav class="main-menu">
+                <h1>
+                    <img src="/icons/ateneo.svg" />
+                </h1>
+                <ul>
+
+                    <!-- Admin: Dashboard -->
+                    @* <li>
+                        <a class="nav-link" asp-area="" asp-page="/Index">
+                            <img class="icon" src="/icons/dashboard.svg" />
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li> *@
+                    <!-- Admin: Hardware Components -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/Item/ItemView">
+                            <img class="icon" src="/icons/hardware.svg" />
+                            <span class="nav-text">Hardware Components</span>
+                        </a>
+                    </li>
+                    <!-- Student: Borrow Components -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/TryCanvas">
+                            <img class="icon" src="/icons/hardware.svg" />
+                            <span class="nav-text">Borrowing Form</span>
+                        </a>
+                    </li>
+                    <!-- Item List -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/BorrowingForm/BorrowingForm">
+                            <img class="icon" src="/icons/hardware.svg" />
+                            <span class="nav-text">Item List</span>
+                        </a>
+                    </li>
+                    <!-- Student Information -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/StudentPage/StudentForms">
+                            <img class="icon" src="/icons/student.svg" />
+                            <span class="nav-text">Student Information</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="mt-auto">
+                    <!-- Logout -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/Account/Logout">
+                            <i class="fa fa-power-off fa-2x"></i>
+                            <span class="nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
+            <!-- Login Partial UI -->
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <partial name="_LoginPartial" />
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+﻿@page "{id:int?}"
+@model HardwareInventoryTrackingSystem.Pages.History.StudentHistoryModel
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            
+            <div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold;border-radius: 10px 10px 0 0;">
+                History
+            </div>
+                    @if (Model.StudentHistory.BorrowingForms != null && Model.StudentHistory.BorrowingForms.Any())
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-striped">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Form ID</th>
+                                        <th>Date To Borrow</th>
+                                        <th>Purpose</th>
+                                        <th>Approved</th>
+                                        <th>Professor</th>
+                                        <th>Room No</th>
+                                        <th>Subject Code</th>
+                                        <th>Borrowed Items</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var form in Model.StudentHistory.BorrowingForms)
+                                    {
+                                        <tr>
+                                            <td><strong>@form.FormId</strong></td>
+                                            <td>@form.DateToBorrow.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                            <td>@form.Purpose</td>
+                                            <td>
+                                                @if (form.IsApproved)
+                                                {
+                                                    <span class="badge bg-success">Approved</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Not Approved</span>
+                                                }
+                                            </td>
+                                            <td>@form.Professor</td>
+                                            <td>@form.RoomNo</td>
+                                            <td>@form.SubjectCode</td>
+                                            <td>
+                                                <ul class="list-group mb-0">
+                                                    @if (form.BorrowedItems != null && form.BorrowedItems.Any())
+                                                    {
+                                                        foreach (var item in form.BorrowedItems)
+                                                        {
+                                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                                <div>
+                                                                    <span><strong>Item:</strong> @item.ItemName</span><br />
+                                                                    <span><strong>Qty:</strong> @item.Quantity</span><br />
+                                                                    <span><strong>Remarks:</strong> @item.Remarks</span><br />
+                                                                    <span><strong>Return:</strong> @(item.ReturnDate != DateTime.MinValue ? item.ReturnDate.ToString("MMMM dd, yyyy hh:mm tt") : "N/A")</span>
+                                                                </div>
+                                                            </li>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <li class="list-group-item">No items borrowed.</li>
+                                                    }
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle"></i> No borrowing forms found.
+                        </div>
+                    }
+                </div>
+
+        </div>
+
+
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+
+    .thead-dark th {
+        background-color: #212529;
+        color: white;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .list-group-item {
+        border: none;
+        background-color: transparent;
+        padding: 10px;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .alert-info {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+        border-radius: 6px;
+    }
+</style>

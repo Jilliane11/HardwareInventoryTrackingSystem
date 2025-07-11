@@ -1,0 +1,348 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - H.I. Laboratory</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/TryCanvas.css">
+</head>
+
+<body>
+<!-- Sidebar Navigation -->
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="grid-container">
+            <nav class="main-menu">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 8.5px;">
+                    <a href="#">
+                        <img src="/icons/ateneo.svg" alt="Logo" style="height: 35px;">
+                    </a>
+                    <p style="margin: 0;">
+                        <span><strong>ATENEO DE DAVAO UNIVERSITY </strong> <br /> </span>
+                        <span><strong>SCHOOL OF ENGINEERING AND ARCHITECTURE </strong><br /></span>
+                        <span style="font-size: 7.3px;">LABORATORY OPERATION & MAINTENANCE DEPARTMENT<br /></span>
+                    </p>
+                </div>
+                <ul>
+                    <!-- Admin: Dashboard -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowersCard">
+                            <img class="icon" src="/icons/dashboard.svg" alt="Student Info Icon" />
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- Admin: Hardware Components -->
+                    <li>
+                        <a class="nav-link"
+                           asp-area=""
+                           asp-page="/AdminView/Item/ItemView">
+                            <img class="icon" src="/icons/hardware.svg" alt="Hardware Icon" />
+                            <span class="nav-text">Hardware Components</span>
+                        </a>
+                    </li>
+
+                    <!-- Student: Borrow Components (partial)-->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/BorrowingForm/BorrowingForm">
+                            <img class="icon" src="/icons/paper.svg" />
+                            <span class="nav-text">Borrowing Form</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowingForm/PendingReturns">
+                            <img class="icon" src="/icons/pending.svg" />
+                            <span class="nav-text">Pending Returns</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowingForm/AdminFormHistory">
+                            <img class="icon" src="/icons/book.svg" />
+                            <span class="nav-text">History</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="mt-auto">
+                   @*  <!-- Profile -->
+                    <li>
+                        <a class="nav-link" href="#">
+                            <i class="fa fa-user fa-2x"></i>
+                            <img class="icon" src="/icons/student.svg" />
+                            <span class="nav-text">Profile</span>
+                        </a>
+                    </li> *@
+                    <!-- Logout -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/Account/Logout">
+                            <i class="fa fa-power-off fa-2x"></i>
+                            <img class="icon" src="/icons/caret-left.svg" />
+                            <span class="nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="main-content" style=" overflow-y: auto;">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+            <footer class="footer text-muted">
+                <div class="container text-center">
+                    <small>by Jilliane Ruth C. Febiar</small>
+                    <br />
+                    <a asp-page="/Privacy" class="text-decoration-underline text-primary">
+                        Privacy
+                    </a>
+                </div>
+            </footer>
+            
+        </div>
+    }
+    else if (User.IsInRole("Student"))
+    {
+        <div class="grid-container">
+            <nav class="main-menu">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 8.5px;">
+                    <a href="#">
+                        <img src="/icons/ateneo.svg" alt="Logo" style="height: 35px;">
+                    </a>
+                    <p style="margin: 0;">
+                        <span><strong>ATENEO DE DAVAO UNIVERSITY </strong> <br /> </span>
+                        <span><strong>SCHOOL OF ENGINEERING AND ARCHITECTURE </strong><br /></span>
+                        <span style="font-size: 7.3px;">LABORATORY OPERATION & MAINTENANCE DEPARTMENT<br /></span>
+                    </p>
+                </div>
+                <ul>
+                    <li>
+                        <a class="nav-link"
+                           asp-area=""
+                           asp-page="/AdminView/Item/ItemView">
+                            <img class="icon" src="/icons/hardware.svg" alt="Hardware Icon" />
+                            <span class="nav-text">Hardware Components</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link"
+                           asp-area=""
+                           asp-page="/History/StudentHistory">
+                            <img class="icon" src="/icons/book.svg" alt="Hardware Icon" />
+                            <span class="nav-text">My History</span>
+                        </a>
+                    </li>
+
+                    <!-- Student: Borrow Components (partial)-->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/BorrowingForm/BorrowingForm">
+                            <img class="icon" src="/icons/paper.svg" />
+                            <span class="nav-text">Borrowing Form</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="mt-auto">
+                    <!-- Profile -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/Account/Profile">
+                            <img class="icon" src="/icons/ferson.svg" />
+                            <span class="nav-text">Profile</span>
+                        </a>
+                    </li>
+                    <!-- Logout -->
+                    <li>
+                        <a class="nav-link" asp-area="" asp-page="/Account/Logout">
+                            <i class="fa fa-power-off fa-2x"></i>
+                            <img class="icon" src="/icons/caret-left.svg" />
+                            <span class="nav-text">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="main-content" style=" overflow-y: auto;">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+            <footer class="footer text-muted">
+                <div class="container text-center">
+                    <small>by Jilliane Ruth C. Febiar</small>
+                    <br />
+                    <a asp-page="/Privacy" class="text-decoration-underline text-primary">
+                        Privacy
+                    </a>
+                </div>
+            </footer>
+
+        </div>
+    }
+
+<div class="main-content" style="overflow-y: auto;">
+    <main role="main" class="pb-3">
+        @RenderBody()
+    </main>
+</div>
+<footer class="footer text-muted">
+    <div class="container text-center">
+        <small>by Jilliane Ruth C. Febiar</small>
+        <br />
+        <a asp-page="/Privacy" class="text-decoration-underline text-primary">Privacy</a>
+    </div>
+</footer>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+@*  
+@using Microsoft.AspNetCore.Identity
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - H.I. Laboratory</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/TryCanvas.css">
+</head>
+
+<body>
+    <!-- Sidebar Navigation -->
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="grid-container">
+            <nav class="main-menu">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 8.5px;">
+                    <a href="#">
+                        <img src="/icons/ateneo.svg" alt="Logo" style="height: 35px;">
+                    </a>
+                    <p style="margin: 0;">
+                        <span><strong>ATENEO DE DAVAO UNIVERSITY </strong> <br /> </span>
+                        <span><strong>SCHOOL OF ENGINEERING AND ARCHITECTURE </strong><br /></span>
+                        <span style="font-size: 7.3px;">LABORATORY OPERATION & MAINTENANCE DEPARTMENT<br /></span>
+                    </p>
+                </div>
+                <ul>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowersCard">
+                                <img class="icon" src="/icons/dashboard.svg" alt="Student Info Icon" />
+                                <span class="nav-text">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/AdminView/Item/ItemView">
+                                <img class="icon" src="/icons/hardware.svg" alt="Hardware Icon" />
+                                <span class="nav-text">Hardware Components</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowingForm/PendingReturns">
+                                <img class="icon" src="/icons/student.svg" />
+                                <span class="nav-text">Pending Returns</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/AdminView/BorrowingForm/AdminFormHistory">
+                                <img class="icon" src="/icons/student.svg" />
+                                <span class="nav-text">History</span>
+                            </a>
+                        </li>
+                    }
+                    else if (User.IsInRole("Student"))
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/AdminView/Item/ItemView">
+                                <img class="icon" src="/icons/hardware.svg" alt="Hardware Icon" />
+                                <span class="nav-text">Hardware Components</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/History/StudentHistory">
+                                <img class="icon" src="/icons/hardware.svg" alt="Hardware Icon" />
+                                <span class="nav-text">My History</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/BorrowingForm/BorrowingForm">
+                                <img class="icon" src="/icons/student.svg" />
+                                <span class="nav-text">Borrowing Form</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+                <ul class="mt-auto">
+                    <!-- Profile -->
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Account/Profile">
+                                <img class="icon" src="/icons/student.svg" />
+                                <span class="nav-text">Profile</span>
+                            </a>
+                        </li>
+                        <!-- Logout -->
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Account/Logout">
+                                <i class="fa fa-power-off fa-2x"></i>
+                                <img class="icon" src="/icons/caret-left.svg" />
+                                <span class="nav-text">Logout</span>
+                            </a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li>
+                            <a class="nav-link" asp-area="" asp-page="/Account/Login">
+                                <i class="fa fa-sign-in fa-2x"></i>
+                                <span class="nav-text">Login</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+
+            <!-- Main Content Area -->
+            <div class="main-content" style="overflow-y: auto;">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+            <footer class="footer text-muted">
+                <div class="container text-center">
+                    <small>by Jilliane Ruth C. Febiar</small>
+                    <br />
+                    <a asp-page="/Privacy" class="text-decoration-underline text-primary">Privacy</a>
+                </div>
+            </footer>
+        </div>
+    }
+    else
+    {
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html> *@

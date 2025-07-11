@@ -1,0 +1,126 @@
+﻿@page
+@attribute [Authorize]
+
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model HardwareInventoryTrackingSystem.Pages.Item.ItemView
+@{
+    ViewData["Title"] = "Items List";
+}
+<body>
+    <!-- Header Section with Search -->
+    <div class="col-12" style="background-color: #2F3590; color: white; padding: 10px; border-radius: 10px 10px 0 0;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h2 style="font-size: 18px; margin: 0;"> <strong>ITEMS LIST</strong></h2>
+            <form method="get" class="d-flex" role="search" style="margin: 0;">
+                <input name="SearchTerm" class="form-control me-2" type="search" placeholder="Search items..." value="@Model.SearchTerm" aria-label="Search" style="max-width: 250px;">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Items Section -->
+    <div class="scrollable-container"  style="max-height: 700px; overflow-y: auto; padding: 5px; border: 1px solid #ddd; margin-top: 10px;">
+        <div class="row" style="margin: 0;">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-4 mb-4" style="padding: 5px;">
+                    <div class="card" style="width: 100%; max-width: 350px; margin: auto;">
+                        <img src="@item.Image" class="card-img-top" alt="@item.Name" style="max-height: 120px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title" style="font-size: 14px; color: #2F3590;">@item.Name</h5>
+                            <p class="card-text" style="font-size: 12px;">Specification: @item.Specification</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item" style="font-size: 12px;"><strong>Code:</strong> @item.Code</li>
+                            <li class="list-group-item" style="font-size: 12px;"><strong>Type:</strong> @item.ItemType</li>
+                            <li class="list-group-item" style="font-size: 12px;"><strong>Status:</strong> @item.Status</li>
+                            <li class="list-group-item" style="font-size: 12px;"><strong>Quantity In Stock:</strong> @item.QuantityInStock</li>
+                        </ul>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="card-body" style="display: flex; justify-content: center;">
+                                <a href="@Url.Page("UpdateItem", new { id = item.Id })"
+                                   class="btn btn-primary"
+                                   style="width: 100%; font-size: 14px; background-color: #2F3590; border: none; color: white;">
+                                    EDIT
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Add New Item Button -->
+        <div class="container mt-3" style="position: relative; padding-bottom: 50px;">
+            <button type="button" onclick="window.location = '@Url.Page("CreateItem")'"
+                    class="btn btn-primary"
+                    style="width: 100%; font-size: 14px; background-color: #19A554; border: none; color: white;">
+                ADD NEW ITEM
+            </button>
+        </div>
+    }
+    </body>
+
+<style>
+    /* General Styles */
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f6f9;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header Styling */
+    .col-12 {
+        font-family: Arial, sans-serif;
+        background-color: #2F3590;
+        color: white;
+        font-weight: bold;
+    }
+
+    /* Scrollable Container */
+    .scrollable-container {
+        margin-top: 10px;
+        border: 1px solid #ddd;
+    }
+
+    /* Card Styling */
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+
+        .card:hover {
+            transform: scale(1.05); /* Hover Effect */
+            transition: transform 0.2s ease-in-out;
+        }
+
+    .card-img-top {
+        height: 120px;
+        object-fit: cover;
+    }
+
+    /* Button Styles */
+    .btn-primary {
+        background-color: #2F3590;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #1d225f;
+        }
+
+    .btn-outline-success {
+        color: #2F3590;
+        border-color: #2F3590;
+    }
+
+        .btn-outline-success:hover {
+            background-color: #2F3590;
+            color: white;
+        }
+</style>

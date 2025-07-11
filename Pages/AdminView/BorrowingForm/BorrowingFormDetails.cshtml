@@ -1,0 +1,107 @@
+﻿@page "{id:int}"
+@model HardwareInventoryTrackingSystem.Pages.AdminView.BorrowingForm.BorrowingFormDetailsModel
+@{
+    ViewData["Title"] = "Borrowing Form Details";
+}
+
+<div class="container shadow-lg bg-white p-4 mt-4 rounded">
+    <!-- Borrower Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card border-primary">
+                <div class="card-body d-flex align-items-center">
+                    <img src="~/images/febiar.jpg" alt="Student Profile" class="rounded-circle img-thumbnail me-3" style="width: 80px; height: 80px;">
+                    <div>
+                        <h5 class="mb-1">@Model.BorrowingForm.StudentName</h5>
+                        <p class="mb-0">Course: CpE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    Borrowing Details
+                </div>
+                <div class="card-body">
+                    <p><strong>Purpose:</strong> @Model.BorrowingForm.Purpose</p>
+                    <p><strong>Professor:</strong> @Model.BorrowingForm.Professor</p>
+                    <p><strong>Room No:</strong> @Model.BorrowingForm.RoomNo</p>
+                    <p><strong>Subject Code:</strong> @Model.BorrowingForm.SubjectCode</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Borrowed Items Section -->
+    <div class="mt-4">
+        <h5 class="text-secondary">Borrowed Items</h5>
+        @if (Model.BorrowingForm.BorrowedItems.Any())
+        {
+            <table class="table table-hover table-striped">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.BorrowingForm.BorrowedItems)
+                    {
+                        <tr>
+                            <td>@item.ItemName</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Remarks</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info mt-3">No items found for this borrowing form.</div>
+        }
+    </div>
+</div>
+
+<style>
+    /* Container Styling */
+    .container {
+        max-width: 1200px;
+    }
+
+    /* Borrower Image */
+    .img-thumbnail {
+        border: 2px solid #007bff;
+    }
+
+    /* Borrowed Items Table */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    /* Typography and Colors */
+    .text-primary {
+        color: #007bff;
+    }
+
+    .text-secondary {
+        color: #6c757d;
+    }
+</style>

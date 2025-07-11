@@ -1,0 +1,124 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.Account.RegisterModel
+@{
+    int currentYear = DateTime.Now.Year;
+}
+
+<div class="container py-5 h-100 gradient-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-10 col-lg-8">
+            <div class="card text-white" style="border-radius: 1rem; background-color: #1A3E59;">
+                <div class="card-body p-5">
+                    <!-- Heading -->
+                    <h1 class="fw-bold mb-4 text-center" style="font-size: 1.5rem;">Create a New Account</h1>
+
+                    <form method="post">
+                        <div class="row">
+                            <!-- Full Name -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.StudentName" class="form-label text-white-50">Full Name</label>
+                                <input asp-for="Input.StudentName" class="form-control" placeholder="Enter your Full Name" />
+                                <span asp-validation-for="Input.StudentName" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.Email" class="form-label text-white-50">Email</label>
+                                <input asp-for="Input.Email" class="form-control" placeholder="Enter email" />
+                                <span asp-validation-for="Input.Email" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Birthdate -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.Birthdate" class="form-label text-white-50">Birthdate</label>
+                                <input asp-for="Input.Birthdate" class="form-control" type="date" />
+                                <span asp-validation-for="Input.Birthdate" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Course -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.UserName" class="form-label text-white-50">Username</label>
+                                <input asp-for="Input.UserName" class="form-control" placeholder="Enter username" />
+                                <span asp-validation-for="Input.UserName" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Last School Year Selection -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.LastEnrolled" class="form-label text-white-50">Last School Year Enrolled</label>
+                                <select asp-for="Input.LastEnrolled" class="form-control" required>
+                                    <option value="" disabled selected>Select a school year</option>
+                                    @for (int i = 0; i < 5; i++)
+                                    {
+                                        int year = currentYear - i; // Generate the last five years
+                                        <option value="@year">@year</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="Input.LastEnrolled" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Semester Selection -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.Password" class="form-label text-white-50">Password</label>
+                                <input asp-for="Input.Password" class="form-control" placeholder="Enter password" />
+                                <span asp-validation-for="Input.Password" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Username -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.Course" class="form-label text-white-50">Course</label>
+                                <select class="form-control" asp-for="Input.Course" asp-items="Model.Options.Courses">
+                                    <option value="">Choose</option>
+                                </select>
+                                <span asp-validation-for="Input.Course" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.ConfirmPassword" class="form-label text-white-50">Confirm Password</label>
+                                <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Confirm password" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="col-md-6 mb-4">
+                                <label asp-for="Input.Semester" class="form-label text-white-50">Select Semester</label>
+                                <select asp-for="Input.Semester" class="form-control" required>
+                                    <option value="" disabled selected>Select a semester</option>
+                                    <option value="1">1st Semester</option>
+                                    <option value="2">2nd Semester</option>
+                                    <option value="3">Summer</option>
+                                </select>
+                                <span asp-validation-for="Input.Semester" class="text-danger alert-danger" role="alert"></span>
+                            </div>
+                        </div>
+
+                        <!-- Register Button -->
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg w-100">Register</button>
+                        </div>
+                    </form>
+
+                    <!-- Link to Login -->
+                    <div class="text-center mt-4">
+                        <p class="mb-0">Already have an account? <a asp-page="/Account/Login" class="text-white-50 fw-bold">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gradient-custom {
+    background-image: url('/images/lab.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    }
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

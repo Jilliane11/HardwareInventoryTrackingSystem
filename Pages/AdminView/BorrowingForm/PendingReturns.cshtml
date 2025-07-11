@@ -1,0 +1,174 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.AdminView.BorrowingForm.PendingReturnsModel
+
+@{
+    ViewData["Title"] = "Pending Returns";
+}
+
+<div class="row">
+    <!-- Pending Forms Column -->
+    <div class="col-md-4">
+        <div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold; margin-bottom: 15px; border-radius: 10px 10px 0 0;">
+            Pending Forms
+        </div>
+        @if (Model.PendingReturns != null && Model.PendingReturns.Any())
+        {
+            @foreach (var pendingReturn in Model.PendingReturns)
+            {
+                <form method="post" asp-page-handler="SelectForm" class="card clickable-card shadow-sm border-primary mb-3">
+                    <input type="hidden" name="formId" value="@pendingReturn.FormId" />
+                    <button type="submit" class="card-body btn btn-link text-start text-decoration-none">
+                        <h5 class="card-title text-primary mb-2">
+                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i> Form ID: @pendingReturn.FormId
+                        </h5>
+                        <p class="card-text mb-1">
+                            <i class="fas fa-file-alt" style="margin-right: 5px;"></i><strong>Student:</strong> @pendingReturn.StudentName
+                        </p>
+                        <p class="card-text text-muted">
+                            <small><i class="fas fa-clock" style="margin-right: 5px;"></i> @pendingReturn.Timestamp.ToLongDateString()</small>
+                        </p>
+                    </button>
+                </form>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info mt-3">No pending returns found.</div>
+        }
+    </div>
+
+    <!-- Details Column -->
+    <div class="col-md-8">
+        <div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold;border-radius: 10px 10px 0 0;">
+            Details
+        </div>
+        @if (Model.SelectedPendingReturn != null)
+        {
+            var selectedPendingReturn = Model.SelectedPendingReturn;
+
+            <div class="card form-details shadow border-success mb-4">
+                <div class="card-header text-white bg-success">
+                    <h5 class="m-0">Details for Form ID: @selectedPendingReturn.FormId</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Student Name:</strong> @selectedPendingReturn.StudentName</p>
+                    <p><strong>Timestamp:</strong> @selectedPendingReturn.Timestamp.ToLongDateString()</p>
+                    <p><strong>Date to Borrow:</strong> @selectedPendingReturn.DateToBorrow.ToLongDateString()</p>
+                    <p><strong>Expected Return Date:</strong> @selectedPendingReturn.ExpectedReturnDate.ToLongDateString()</p>
+                    <p>
+                        <strong>Actual Return Date:</strong>
+                        @if (selectedPendingReturn.ActualReturnDateTime != DateTime.MinValue)
+                        {
+                            @selectedPendingReturn.ActualReturnDateTime.ToLongDateString()
+                        }
+                        else
+                        {
+                            <span class="text-muted">Not Returned</span>
+                        }
+                    </p>
+
+                    <p><strong>Borrowed Items:</strong></p>
+                    @if (selectedPendingReturn.BorrowedItems != null && selectedPendingReturn.BorrowedItems.Any())
+                    {
+                        <ul class="list-unstyled">
+                            @foreach (var item in selectedPendingReturn.BorrowedItems)
+                            {
+                                <li class="d-flex justify-content-between align-items-center mb-2">
+                                    <span>
+                                        <strong>@item.ItemName</strong> - Quantity: @item.Quantity, Remarks: @item.Remarks
+                                    </span>
+                                    @if (item.Claimed)
+                                    {
+                                        <form method="post" asp-page-handler="ToggleReturnStatus" style="display:inline;">
+                                            <input type="hidden" name="ItemId" value="@item.ItemId" />
+                                            <input type="hidden" name="FormId" value="@selectedPendingReturn.FormId" />
+                                            <button type="submit"
+                                                    class="btn btn-sm @(item.Returned ? "btn-secondary" : "btn-success")"
+                                            @(item.Returned ? "disabled" : "")>
+                                                @(item.Returned ? "Returned" : "Mark as Returned")
+                                            </button>
+                                        </form>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No Claimed Items</span>
+                    }
+
+                    <form method="post" asp-page-handler="CompleteForm">
+                        <input type="hidden" name="formId" value="@selectedPendingReturn.FormId" />
+                        <button type="submit" class="btn btn-complete">
+                            <i class="fas fa-check"></i> Complete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mt-3">Select a form to view details.</div>
+        }
+    </div>
+</div>
+
+
+
+<style>
+    .clickable-card {
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        border: 1.5px solid #2F3590;
+        border-radius: 8px;
+    }
+
+        .clickable-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 100px #2F3590;
+        }
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .btn.btn-link {
+        width: 100%;
+        text-align: left;
+        background-color: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        color: inherit;
+    }
+
+        .btn.btn-link:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+    .btn-complete {
+        background: linear-gradient(145deg, #2196F3, #1976D2);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        border: none;
+    }
+
+    .btn-success {
+        background-color: #4CAF50 !important;
+    }
+
+    .btn-secondary {
+        background-color: #6c757d !important;
+        color: white !important;
+        cursor: not-allowed;
+    }
+
+    .btn:disabled {
+        background-color: #E9222E;
+        color: #E9222E;
+        font-size: 15px;
+    }
+</style>

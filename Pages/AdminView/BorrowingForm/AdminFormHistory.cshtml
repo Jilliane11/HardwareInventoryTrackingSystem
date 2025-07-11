@@ -1,0 +1,124 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.AdminView.BorrowingForm.AdminFormHistoryViewModel
+@{
+    ViewData["Title"] = "Admin Form History";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold;border-radius: 10px 10px 0 0;">
+            History
+        </div>
+        @if (Model.History != null && Model.History.Any())
+        {
+            <div class="table-responsive shadow-sm" >
+                <table class="table table-hover table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Form ID</th>
+                            <th>Student Name</th>
+                            <th>Purpose</th>
+                            <th>Professor</th>
+                            <th>Room No</th>
+                            <th>Date Borrowed</th>
+                            <th>Expected Return Date</th>
+                            <th>Actual Return Date</th>
+                            <th>Items Borrowed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var historyItem in Model.History)
+                        {
+                            <tr>
+                                <td><strong>@historyItem.FormId</strong></td>
+                                <td>@historyItem.StudentName</td>
+                                <td>@historyItem.Purpose</td>
+                                <td>@historyItem.Professor</td>
+                                <td>@historyItem.RoomNo</td>
+                                <td>@historyItem.DateToBorrow.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                <td>@historyItem.ExpectedReturnDate.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                <td>@historyItem.ReturnedDate.ToString("MMMM dd, yyyy hh:mm tt")</td>
+                                <td>
+                                    <ul class="list-group mb-0">
+                                        @foreach (var item in historyItem.BorrowedItems)
+                                        {
+                                            <li class="list-group-item d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <span><strong>Item:</strong> @item.ItemName</span><br />
+                                                    <span><strong>Qty:</strong> @item.Quantity</span><br />
+                                                    <span><strong>Remarks:</strong> @item.Remarks</span><br />
+                                                    <span><strong>Return:</strong> @(item.ReturnDate != DateTime.MinValue ? item.ReturnDate.ToString("MMMM dd, yyyy hh:mm tt") : "N/A")</span>
+                                                </div>
+                                                
+                                            </li>
+                                        }
+                                    </ul>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle"></i> No completed borrowing forms found.
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f5f9;
+    }
+
+    .thead-dark th {
+        background-color: #212529;
+        color: white;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+        background-color: #f8f9fa;
+    }
+
+    .badge-pill {
+        padding: 0.5em 1em;
+        font-size: 0.9rem;
+        border-radius: 25px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .badge-danger {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .list-group-item {
+        border: none;
+        background-color: transparent;
+        padding: 10px;
+    }
+
+    .shadow-sm {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .alert-info {
+        background-color: #e3f2fd;
+        color: #0d6efd;
+        border-radius: 6px;
+    }
+</style>
+

@@ -1,0 +1,299 @@
+﻿@page "{id:int?}"
+@model HardwareInventoryTrackingSystem.Pages.BorrowingForm.BFWithItemListModel
+
+@{
+    ViewData["Title"] = "Try Borrowing Form";
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        <ul>
+            @foreach (var modelState in ViewData.ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    <li>@error.ErrorMessage</li>
+                    <li>@error.Exception</li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+
+<form id="borrowingForm" method="post">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center" style="background-color: #2F3590; color: white; padding: 10px; font-size: 18px; font-weight: bold; border-radius: 10px 10px 0 0;">
+            <span>AVAILABLE ITEMS</span>
+            <input type="text" id="searchBar" class="form-control" placeholder="Search items..." style="width: 250px;">
+        </div>
+    </div>
+    <div class="scrollable-container" style="max-height: 500px; overflow-y: auto; padding: 5px; border: 1px solid #ddd;">
+        <div class="row" id="availableItemsContainer" style="margin: 0;">
+            @if (Model.AvailableItems != null && Model.AvailableItems.Any())
+            {
+                @foreach (var item in Model.AvailableItems)
+                {
+                    <div class="col-md-4 mb-4 item-card" style="padding: 5px;"
+                         data-item-name="@item.Name"
+                         data-item-code="@item.ItemCode"
+                         data-item-specification="@item.Specification">
+                        <div class="card" style="width: 100%; max-width: 350px; margin: auto;">
+                            <img src="@item.Picture" class="card-img-top" alt="@item.Name" style="max-height: 120px; object-fit: cover;">
+                            <div class="card-body">
+                                <h5 class="card-title" style="font-size: 14px; color: #2F3590;">@item.Name</h5>
+                                <p class="card-text" style="font-size: 12px;">Specification: @item.Specification</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item" style="font-size: 12px;"><strong>Code:</strong> @item.ItemCode</li>
+                                <li class="list-group-item" style="font-size: 12px;"><strong>Quantity In Stock:</strong> @item.Quantity</li>
+                            </ul>
+                            <div class="card-body" style="display: flex; justify-content: center;">
+                                <button type="button"
+                                        class="btn btn-primary select-item-btn"
+                                        style="width: 100%;"
+                                        data-item-id="@item.Id"
+                                        data-item-name="@item.Name"
+                                        data-item-specification="@item.Specification"
+                                        data-item-image="@item.Picture">
+                                    SELECT
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+
+    <!-- Selected Items Table -->
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center " style="background-color: #2F3590; color: white; padding: 10px;  font-size: 18px; font-weight: bold; margin-top: 15px;">
+            SELECTED ITEMS
+        </div>
+    </div>
+    <div class="container">
+        <table class="table" id="selectedItemsTable">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Selected items will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container" style="position: relative; padding-bottom: 50px;">
+        <button type="submit" class="btn btn-primary text-end" style="position: absolute; bottom: 0; right: 0;">
+            Submit Borrowing Form
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded',
+            function() {
+                const borrowingForm = document.getElementById('borrowingForm');
+                const selectedItemsTable = document.querySelector('#selectedItemsTable tbody');
+                const selectedItems = []; // Array to track selected items
+                const searchBar = document.getElementById('searchBar');
+                const itemsContainer = document.getElementById('availableItemsContainer');
+                const itemCards = itemsContainer.querySelectorAll('.item-card');
+
+                    searchBar.addEventListener('input', function () {
+                            const searchTerm = searchBar.value.toLowerCase();
+
+                            itemCards.forEach(card => {
+                                const itemName = card.getAttribute('data-item-name').toLowerCase();
+                                const itemCode = card.getAttribute('data-item-code').toLowerCase();
+                                const itemSpecification = card.getAttribute('data-item-specification').toLowerCase();
+
+                                // Check if the search term matches any of the attributes
+                                if (itemName.includes(searchTerm) || itemCode.includes(searchTerm) || itemSpecification.includes(searchTerm)) {
+                                    card.style.display = 'block';
+                                } else {
+                                    card.style.display = 'none';
+                                }
+                            });
+                     });
+                    searchBar.addEventListener('keypress', function (event) {
+                                    if (event.key === 'Enter') {
+                                    event.preventDefault(); // Prevent form submission
+                                    searchBar.blur(); // Optionally unfocus the input field
+                                }
+                    });
+
+
+                // Event listener for "SELECT" buttons
+                document.querySelectorAll('.select-item-btn').forEach(button => {
+                    button.addEventListener('click',
+                        function() {
+                            const itemId = this.getAttribute('data-item-id');
+                            const itemName = this.getAttribute('data-item-name');
+                            const itemSpecification = this.getAttribute('data-item-specification');
+                            const itemImage = this.getAttribute('data-item-image');
+
+                            // Check if the item is already selected
+                            if (document.querySelector(`#selectedItemsTable tbody tr[data-item-id="${itemId}"]`)) {
+                                alert('This item is already selected.');
+                                return;
+                            }
+
+                            // Add item to the selectedItems array
+                            selectedItems.push({
+                                itemId: itemId,
+                                itemName: itemName,
+                                itemSpecification: itemSpecification,
+                                quantity: 1,
+                                remarks: ''
+                            });
+
+                            // Add a row to the selected items table
+                            const row = document.createElement('tr');
+                            row.setAttribute('data-item-id', itemId);
+                            row.innerHTML = `
+                        <td><img src="${itemImage}" alt="${itemName}" style="width: 80px; height: auto;"></td>
+                        <td>${itemName}</td>
+                        <td><input type="number" class="form-control quantity-input" value="1" min="1"></td>
+                        <td><input type="text" class="form-control remarks-input" placeholder="Enter remarks"></td>
+                        <td><button type="button" class="btn btn-danger remove-item">Remove</button></td>
+                    `;
+                            selectedItemsTable.appendChild(row);
+
+                            // Attach event listener to the remove button
+                            row.querySelector('.remove-item').addEventListener('click',
+                                function() {
+                                    // Remove the item from the selectedItems array
+                                    const index = selectedItems.findIndex(item => item.itemId === itemId);
+                                    if (index > -1) selectedItems.splice(index, 1);
+                                    // Remove the row from the table
+                                    row.remove();
+                                });
+
+                            // Update quantity and remarks in the array
+                            row.querySelector('.quantity-input').addEventListener('input',
+                                function() {
+                                    const index = selectedItems.findIndex(item => item.itemId === itemId);
+                                    if (index > -1) selectedItems[index].quantity = parseInt(this.value) || 1;
+                                });
+                            row.querySelector('.remarks-input').addEventListener('input',
+                                function() {
+                                    const index = selectedItems.findIndex(item => item.itemId === itemId);
+                                    if (index > -1) selectedItems[index].remarks = this.value;
+                                });
+                        });
+                });
+
+                // Handle form submission
+                borrowingForm.addEventListener('submit',
+                    function(event) {
+
+                        // Append selected items as hidden inputs
+
+                        selectedItems.forEach((item, index) => {
+
+                            const itemIdInput = document.createElement('input');
+                            itemIdInput.type = 'hidden';
+                            itemIdInput.name = `SelectedItems[${index}].ItemId`;
+                            itemIdInput.value = item.itemId;
+                            borrowingForm.appendChild(itemIdInput);
+
+                            const quantityInput = document.createElement('input');
+                            quantityInput.type = 'hidden';
+                            quantityInput.name = `SelectedItems[${index}].Quantity`;
+                            quantityInput.value = item.quantity;
+                            borrowingForm.appendChild(quantityInput);
+
+                            const remarksInput = document.createElement('input');
+                            remarksInput.type = 'hidden';
+                            remarksInput.name = `SelectedItems[${index}].Remarks`;
+                            remarksInput.value = item.remarks;
+                            borrowingForm.appendChild(remarksInput);
+                        });
+                    });
+            });
+
+    </script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styling */
+        .col-12 {
+            font-family: Arial, sans-serif;
+            background-color: #2F3590;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Scrollable Container */
+        .scrollable-container {
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Card Styling */
+        .card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+
+            .card:hover {
+                transform: scale(1.05); /* Hover Effect */
+                transition: transform 0.2s ease-in-out;
+            }
+
+        .card-img-top {
+            height: 120px;
+            object-fit: cover;
+        }
+
+        /* Button Styles */
+        .btn-primary {
+            background-color: #2F3590;
+            border: none;
+        }
+
+            .btn-primary:hover {
+                background-color: #1d225f;
+            }
+
+        .btn-outline-success {
+            color: #2F3590;
+            border-color: #2F3590;
+        }
+
+            .btn-outline-success:hover {
+                background-color: #2F3590;
+                color: white;
+            }
+
+
+        .item-card {
+            display: block;
+        }
+    </style>
+
+
+}
+

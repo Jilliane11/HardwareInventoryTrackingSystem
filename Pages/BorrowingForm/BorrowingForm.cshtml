@@ -1,0 +1,99 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.BorrowingForm.BorrowingFormModel
+@{
+
+}
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+    <form method="post">
+        <div class="row">
+            <div class="row">
+                <div class="col-12">
+                <div style="background-color: #2F3590; color: white; text-align: center; padding: 10px; font-size: 18px; font-weight: bold;border-radius: 10px 10px 0 0;">
+                        HARDWARE INVENTORY SYSTEM BORROWING FORM
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label><b>SUBJECT CODE:</b></label>
+                        <select class="form-control dropdown" asp-for="Input.SubjectCode" asp-items="Model.Options.Subjects">
+                            <option value="">Choose</option>
+                        </select>
+                        <span asp-validation-for="Input.SubjectCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Purpose of the Laboratory -->
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label><b>PURPOSE OF THE LABORATORY:</b></label>
+                        <select class="form-control dropdown" asp-for="Input.Purpose" asp-items="Model.Options.Purposes">
+                            <option value="">Choose</option>
+                        </select>
+                        <span asp-validation-for="Input.Purpose" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Room Number -->
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label><b>ROOM NUMBER:</b></label>
+                        <select class="form-control dropdown" asp-for="Input.RoomNo" asp-items="Model.Options.Rooms">
+                            <option value="">Choose</option>
+                        </select>
+                        <span asp-validation-for="Input.RoomNo" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Professor-in-Charge -->
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label><b>PROFESSOR-IN-CHARGE:</b></label>
+                        <select class="form-control dropdown" asp-for="Input.Professor" asp-items="Model.Options.Professors">
+                            <option value="">Choose</option>
+                        </select>
+                        <span asp-validation-for="Input.Professor" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Borrowing Date and Time -->
+                <div class="col-md-12 mt-3">
+                    <div class="form-group">
+                        <label asp-for="Input.DateToBorrow"><b>BORROWING DATE & TIME:</b></label>
+                        <input asp-for="Input.DateToBorrow" class="form-control" type="datetime-local"/>
+                        <span asp-validation-for="Input.DateToBorrow" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-md-center mt-3">
+                <div class="text-danger">
+                    Note: Equipment shall not be brought outside any designated room without any written request and permission from the division chair.
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-6 text-start">
+                    <button type="button" class="btn btn-danger">CANCEL</button>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button type="submit" class="btn btn-primary">PROCEED</button>
+                </div>
+            </div>
+
+
+
+        </div>
+    </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

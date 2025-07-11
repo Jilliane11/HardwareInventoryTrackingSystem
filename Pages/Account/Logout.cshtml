@@ -1,0 +1,59 @@
+﻿@page
+@model HardwareInventoryTrackingSystem.Pages.Account.LogoutModel
+@{
+    ViewData["Title"] = "Logging Out";
+}
+
+<div class="container py-5 h-100 gradient-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card text-white" style="border-radius: 1rem; background-color: #1A3E59;">
+                <div class="card-body p-5 text-center">
+                    <!-- Logging Out Message -->
+                    <h1 class="fw-bold mb-4" style="font-size: 1.5rem;">Logging Out...</h1>
+                    <p class="text-white-50 mb-4">Please wait while we log you out...</p>
+
+                    <!-- Logout Animation -->
+                    <div class="spinner-border text-light" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Redirect Logic -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Wait a bit to show the animation before redirecting
+        setTimeout(function () {
+            window.location.href = '/Account/Login'; // Redirect to login or home page
+        }, 2000); // 2-second delay
+    });
+</script>
+
+<footer class="footer text-muted">
+    <div class="container text-center">
+        <small>by Jilliane Ruth C. Febiar</small>
+        <br />
+        <a asp-area="" asp-page="/Privacy" class="text-white-50">Privacy</a>
+    </div>
+</footer>
+
+<style>
+    .gradient-custom {
+        background-image: url('/images/lab.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh; /* Full-screen height */
+    }
+
+    .footer {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        color: #ccc; /* Muted footer text color */
+    }
+</style>
